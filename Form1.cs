@@ -1,4 +1,5 @@
 ﻿using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Spreadsheet;
 using DocumentFormat.OpenXml.Wordprocessing;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using Run = DocumentFormat.OpenXml.Wordprocessing.Run;
+using RunProperties = DocumentFormat.OpenXml.Wordprocessing.RunProperties;
 
 namespace DocumentAnalyzer;
 
@@ -41,34 +44,58 @@ public partial class Form1 : Form
         {
             using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(filePath, false))
             {
-                var paragraphs = wordDoc.MainDocumentPart.Document.Body.Elements<Paragraph>()
-                                        .Select(p => p.InnerText)
-                                        .ToList();
+                richTextBox_DOCXPreview.Text += "Paragraph Details:\n\n";
 
-                listView.Items.Clear();
-                foreach (var para in paragraphs)
+                var mainPart = wordDoc.MainDocumentPart;
+                if (mainPart == null)
                 {
-                    listView.Items.Add(para); 
+                    Console.WriteLine("Main document part not found.");
+                    return;
                 }
 
-                // Extract font and style details
-                var stylesPart = wordDoc.MainDocumentPart.StyleDefinitionsPart;
-                if (stylesPart != null)
+                var stylesPart = mainPart.StyleDefinitionsPart;
+                var mainPartBody = mainPart.Document.Body;
+
+                if (mainPartBody == null)
                 {
-                    foreach (var style in stylesPart.Styles.Elements<Style>())
+                    Console.WriteLine("Body part not found.");
+                    return;
+                }
+
+                var paragraphs = mainPartBody.Elements<Paragraph>();
+
+                foreach (var paragraph in paragraphs)
+                {
+                    // Paragraph text
+                    richTextBox_DOCXPreview.Text += $"Text: {paragraph.InnerText}\n";
+    
+                    // Paragraph properties (spacing)
+                    var paragraphProps = paragraph.ParagraphProperties;
+                    if (paragraphProps != null)
                     {
-                        richTextBox_DOCXPreview.Text += $"Style ID: {style.StyleId}, Name: {style.StyleName?.Val}{Environment.NewLine}";
+                        var spacing = paragraphProps.SpacingBetweenLines;
+                        if (spacing != null)
+                        {
+                            richTextBox_DOCXPreview.Text += $"  Line Spacing: {spacing.Line ?? "Default"} (in 20ths of a point)\n";
+                        }
                     }
+
+                    richTextBox_DOCXPreview.Text += "\n";
                 }
 
-                // Get margins from section properties
-                var sectionProps = wordDoc.MainDocumentPart.Document.Body.Elements<SectionProperties>().FirstOrDefault();
+                
+                // Extract margins
+                var sectionProps = mainPartBody.Elements<SectionProperties>().FirstOrDefault();
                 if (sectionProps != null)
                 {
                     var pageMargins = sectionProps.GetFirstChild<PageMargin>();
                     if (pageMargins != null)
                     {
-                        richTextBox_DOCXPreview.Text += $"Margins: Top {pageMargins.Top}, Bottom {pageMargins.Bottom}, Left {pageMargins.Left}, Right {pageMargins.Right}{Environment.NewLine}";
+                        richTextBox_DOCXPreview.Text += "Margins:\n\n";
+                        richTextBox_DOCXPreview.Text += $"  Top: {pageMargins.Top} twips\n";
+                        richTextBox_DOCXPreview.Text += $"  Bottom: {pageMargins.Bottom} twips\n";
+                        richTextBox_DOCXPreview.Text += $"  Left: {pageMargins.Left} twips\n";
+                        richTextBox_DOCXPreview.Text += $"  Right: {pageMargins.Right} twips\n";
                     }
                 }
             }
@@ -78,4 +105,5 @@ public partial class Form1 : Form
             MessageBox.Show($"Error: {ex.Message}");
         }
     }
+
 }

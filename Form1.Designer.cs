@@ -30,7 +30,6 @@
         {
             btn_OpenFile = new Button();
             richTextBox_DOCXPreview = new RichTextBox();
-            listView = new ListView();
             SuspendLayout();
             // 
             // btn_OpenFile
@@ -47,26 +46,18 @@
             // 
             richTextBox_DOCXPreview.Location = new Point(500, 148);
             richTextBox_DOCXPreview.Name = "richTextBox_DOCXPreview";
-            richTextBox_DOCXPreview.Size = new Size(1259, 358);
+            richTextBox_DOCXPreview.Size = new Size(1497, 1020);
             richTextBox_DOCXPreview.TabIndex = 1;
             richTextBox_DOCXPreview.Text = "";
-            // 
-            // listView
-            // 
-            listView.Location = new Point(500, 521);
-            listView.Name = "listView";
-            listView.Size = new Size(1259, 559);
-            listView.TabIndex = 2;
-            listView.UseCompatibleStateImageBehavior = false;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(17F, 41F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(2065, 1241);
-            Controls.Add(listView);
             Controls.Add(richTextBox_DOCXPreview);
             Controls.Add(btn_OpenFile);
+            DoubleBuffered = true;
             Name = "Form1";
             Text = "Form1";
             ResumeLayout(false);
@@ -76,6 +67,5 @@
 
         private Button btn_OpenFile;
         private RichTextBox richTextBox_DOCXPreview;
-        private ListView listView;
     }
 }
