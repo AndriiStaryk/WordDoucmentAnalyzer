@@ -10,39 +10,32 @@ namespace DocumentAnalyzer;
 
 internal class DocxParser
 {
-    public void ParseWordDocument(string filePath, RichTextBox richTextBox)
+    public static void ParseWordDocument(string filePath, RichTextBox richTextBox)
     {
         try
         {
-            using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(filePath, false))
+            using WordprocessingDocument wordDoc = WordprocessingDocument.Open(filePath, false);
+
+            richTextBox.Text += "Paragraph Details:\n\n";
+
+            var mainPart = wordDoc.MainDocumentPart;
+            if (mainPart == null)
             {
-                richTextBox.Text += "Paragraph Details:\n\n";
-
-                var mainPart = wordDoc.MainDocumentPart;
-                if (mainPart == null)
-                {
-                    Console.WriteLine("Main document part not found.");
-                    return;
-                }
-
-                var mainPartBody = mainPart.Document.Body;
-
-                if (mainPartBody == null)
-                {
-                    Console.WriteLine("Body part not found.");
-                    return;
-                }
-
-                // Extract margins
-                extractMargins(mainPartBody, richTextBox);
-
-                // Extract styles Fonts Names and Sizes
-                extractStyles(mainPart, richTextBox);
-
-                //Extract paragraphs aka regular Word Text
-                parseParagraphs(mainPartBody, richTextBox);
-
+                Console.WriteLine("Main document part not found.");
+                return;
             }
+
+            var mainPartBody = mainPart.Document.Body;
+
+            if (mainPartBody == null)
+            {
+                Console.WriteLine("Body part not found.");
+                return;
+            }
+
+            ExtractMargins(mainPartBody, richTextBox);
+            ExtractStyles(mainPart, richTextBox);
+            ParseParagraphs(mainPartBody, richTextBox);
         }
         catch (Exception ex)
         {
@@ -50,7 +43,7 @@ internal class DocxParser
         }
     }
 
-    private void extractMargins(Body body, RichTextBox richTextBox)
+    private static void ExtractMargins(Body body, RichTextBox richTextBox)
     {
         var sectionProps = body.Elements<SectionProperties>().FirstOrDefault();
         if (sectionProps != null)
@@ -67,7 +60,7 @@ internal class DocxParser
         }
     }
 
-    private void extractStyles(MainDocumentPart mdp, RichTextBox richTextBox)
+    private static void ExtractStyles(MainDocumentPart mdp, RichTextBox richTextBox)
     {
         var stylesPart = mdp.StyleDefinitionsPart;
         if (stylesPart != null)
@@ -103,15 +96,13 @@ internal class DocxParser
             }
         }
     }
-    private void parseParagraphs(Body body, RichTextBox richTextBox)
+    private static void ParseParagraphs(Body body, RichTextBox richTextBox)
     {
         var paragraphs = body.Elements<DocumentFormat.OpenXml.Wordprocessing.Paragraph>();
         foreach (var paragraph in paragraphs)
         {
-            // Paragraph text
             richTextBox.Text += $"Text: {paragraph.InnerText}\n";
 
-            // Paragraph properties (spacing)
             var paragraphProps = paragraph.ParagraphProperties;
             if (paragraphProps != null)
             {
@@ -125,5 +116,4 @@ internal class DocxParser
             richTextBox.Text += "\n";
         }
     }
-
 }

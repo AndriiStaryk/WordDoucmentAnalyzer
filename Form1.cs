@@ -2,7 +2,6 @@
 
 public partial class Form1 : Form
 {
-    private DocxParser docxParser = new DocxParser();
     public Form1()
     {
         InitializeComponent();
@@ -19,7 +18,7 @@ public partial class Form1 : Form
         if (openFileDialog.ShowDialog() == DialogResult.OK)
         {
             string filePath = openFileDialog.FileName;
-            docxParser.ParseWordDocument(filePath.ToLower(), richTextBox_DOCXPreview);
+            DocxParser.ParseWordDocument(filePath.ToLower(), richTextBox_DOCXPreview);
         }
     }
 }
