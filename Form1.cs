@@ -1,4 +1,5 @@
-﻿using DocumentFormat.OpenXml.Packaging;
+﻿using DocumentFormat.OpenXml.Drawing;
+using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
 using DocumentFormat.OpenXml.Wordprocessing;
 using System;
@@ -53,7 +54,6 @@ public partial class Form1 : Form
                     return;
                 }
 
-                var stylesPart = mainPart.StyleDefinitionsPart;
                 var mainPartBody = mainPart.Document.Body;
 
                 if (mainPartBody == null)
@@ -62,47 +62,97 @@ public partial class Form1 : Form
                     return;
                 }
 
-                var paragraphs = mainPartBody.Elements<Paragraph>();
-
-                foreach (var paragraph in paragraphs)
-                {
-                    // Paragraph text
-                    richTextBox_DOCXPreview.Text += $"Text: {paragraph.InnerText}\n";
-    
-                    // Paragraph properties (spacing)
-                    var paragraphProps = paragraph.ParagraphProperties;
-                    if (paragraphProps != null)
-                    {
-                        var spacing = paragraphProps.SpacingBetweenLines;
-                        if (spacing != null)
-                        {
-                            richTextBox_DOCXPreview.Text += $"  Line Spacing: {spacing.Line ?? "Default"} (in 20ths of a point)\n";
-                        }
-                    }
-
-                    richTextBox_DOCXPreview.Text += "\n";
-                }
-
-                
                 // Extract margins
-                var sectionProps = mainPartBody.Elements<SectionProperties>().FirstOrDefault();
-                if (sectionProps != null)
-                {
-                    var pageMargins = sectionProps.GetFirstChild<PageMargin>();
-                    if (pageMargins != null)
-                    {
-                        richTextBox_DOCXPreview.Text += "Margins:\n\n";
-                        richTextBox_DOCXPreview.Text += $"  Top: {pageMargins.Top} twips\n";
-                        richTextBox_DOCXPreview.Text += $"  Bottom: {pageMargins.Bottom} twips\n";
-                        richTextBox_DOCXPreview.Text += $"  Left: {pageMargins.Left} twips\n";
-                        richTextBox_DOCXPreview.Text += $"  Right: {pageMargins.Right} twips\n";
-                    }
-                }
+                extractMargins(mainPartBody);
+               
+                // Extract styles Fonts Names and Sizes
+                extractStyles(mainPart);
+
+                //Extract paragraphs aka regular Word Text
+                parseParagraphs(mainPartBody);
+
             }
         }
         catch (Exception ex)
         {
             MessageBox.Show($"Error: {ex.Message}");
+        }
+    }
+
+    private void extractMargins(Body body)
+    {
+        var sectionProps = body.Elements<SectionProperties>().FirstOrDefault();
+        if (sectionProps != null)
+        {
+            var pageMargins = sectionProps.GetFirstChild<PageMargin>();
+            if (pageMargins != null)
+            {
+                richTextBox_DOCXPreview.Text += "Margins:\n\n";
+                richTextBox_DOCXPreview.Text += $"  Top: {pageMargins.Top} twips\n";
+                richTextBox_DOCXPreview.Text += $"  Bottom: {pageMargins.Bottom} twips\n";
+                richTextBox_DOCXPreview.Text += $"  Left: {pageMargins.Left} twips\n";
+                richTextBox_DOCXPreview.Text += $"  Right: {pageMargins.Right} twips\n";
+            }
+        }
+    }
+
+    private void extractStyles(MainDocumentPart mdp)
+    {
+        var stylesPart = mdp.StyleDefinitionsPart;
+        if (stylesPart != null)
+        {
+            richTextBox_DOCXPreview.Text += "Styles:\n\n";
+
+            var stylesProps = stylesPart.Styles;
+            if (stylesProps != null)
+            {
+                var styles = stylesProps.Elements<Style>();
+                foreach (var style in styles)
+                {
+                    richTextBox_DOCXPreview.Text += $"Style ID: {style.StyleId}, Name: {style.StyleName?.Val}{Environment.NewLine}";
+
+                    var runProps = style.StyleRunProperties;
+                    if (runProps != null)
+                    {
+                        var runFonts = runProps.GetFirstChild<RunFonts>();
+                        if (runFonts != null)
+                        {
+                            richTextBox_DOCXPreview.Text += $"  Default Font: {runFonts.Ascii ?? "Not Set"}{Environment.NewLine}";
+
+                        }
+
+                        var fontSize = runProps.GetFirstChild<DocumentFormat.OpenXml.Wordprocessing.FontSize>();
+                        if (fontSize != null)
+                        {
+                            richTextBox_DOCXPreview.Text += $"  Default Font Size: {fontSize.Val} (in half-points){Environment.NewLine}";
+                        }
+                    }
+                }
+
+                richTextBox_DOCXPreview.Text += "\n";
+            }
+        }
+    }
+    private void parseParagraphs(Body body)
+    {
+        var paragraphs = body.Elements<DocumentFormat.OpenXml.Wordprocessing.Paragraph>();
+        foreach (var paragraph in paragraphs)
+        {
+            // Paragraph text
+            richTextBox_DOCXPreview.Text += $"Text: {paragraph.InnerText}\n";
+
+            // Paragraph properties (spacing)
+            var paragraphProps = paragraph.ParagraphProperties;
+            if (paragraphProps != null)
+            {
+                var spacing = paragraphProps.SpacingBetweenLines;
+                if (spacing != null)
+                {
+                    richTextBox_DOCXPreview.Text += $"  Line Spacing: {spacing.Line ?? "Default"} (in 20ths of a point)\n";
+                }
+            }
+
+            richTextBox_DOCXPreview.Text += "\n";
         }
     }
 
