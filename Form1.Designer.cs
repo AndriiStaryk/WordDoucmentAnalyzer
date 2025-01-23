@@ -46,11 +46,17 @@
             checkBox_Tables = new CheckBox();
             checkBox_Margins = new CheckBox();
             checkBox_Font = new CheckBox();
+            richTextBox_Results = new RichTextBox();
+            checkedListBox_Results = new CheckedListBox();
+            numericUpDown_Interval = new NumericUpDown();
+            label_Interval = new Label();
+            checkBox_Interval = new CheckBox();
             ((System.ComponentModel.ISupportInitialize)numericUpDown_TopMargin).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown_LeftMargin).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown_BottomMargin).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown_RightMargin).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown_FontSize).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown_Interval).BeginInit();
             SuspendLayout();
             // 
             // btn_OpenFile
@@ -67,7 +73,7 @@
             // 
             richTextBox_DOCXPreview.Location = new Point(732, 151);
             richTextBox_DOCXPreview.Name = "richTextBox_DOCXPreview";
-            richTextBox_DOCXPreview.Size = new Size(1497, 1020);
+            richTextBox_DOCXPreview.Size = new Size(753, 1020);
             richTextBox_DOCXPreview.TabIndex = 1;
             richTextBox_DOCXPreview.Text = "";
             // 
@@ -162,9 +168,9 @@
             label_Font.AutoSize = true;
             label_Font.Location = new Point(37, 479);
             label_Font.Name = "label_Font";
-            label_Font.Size = new Size(78, 41);
+            label_Font.Size = new Size(97, 41);
             label_Font.TabIndex = 11;
-            label_Font.Text = "Font";
+            label_Font.Text = "Name";
             label_Font.Click += label5_Click;
             // 
             // numericUpDown_FontSize
@@ -191,7 +197,7 @@
             // checkBox_Pictures
             // 
             checkBox_Pictures.AutoSize = true;
-            checkBox_Pictures.Location = new Point(37, 616);
+            checkBox_Pictures.Location = new Point(37, 785);
             checkBox_Pictures.Name = "checkBox_Pictures";
             checkBox_Pictures.Size = new Size(244, 45);
             checkBox_Pictures.TabIndex = 16;
@@ -201,7 +207,7 @@
             // checkBox_Tables
             // 
             checkBox_Tables.AutoSize = true;
-            checkBox_Tables.Location = new Point(37, 680);
+            checkBox_Tables.Location = new Point(37, 849);
             checkBox_Tables.Name = "checkBox_Tables";
             checkBox_Tables.Size = new Size(222, 45);
             checkBox_Tables.TabIndex = 17;
@@ -215,9 +221,9 @@
             checkBox_Margins.CheckState = CheckState.Checked;
             checkBox_Margins.Location = new Point(37, 117);
             checkBox_Margins.Name = "checkBox_Margins";
-            checkBox_Margins.Size = new Size(163, 45);
+            checkBox_Margins.Size = new Size(274, 45);
             checkBox_Margins.TabIndex = 18;
-            checkBox_Margins.Text = "Margins";
+            checkBox_Margins.Text = "Margins (Inches)";
             checkBox_Margins.UseVisualStyleBackColor = true;
             checkBox_Margins.CheckedChanged += checkBox_Margins_CheckedChanged;
             // 
@@ -234,11 +240,67 @@
             checkBox_Font.UseVisualStyleBackColor = true;
             checkBox_Font.CheckedChanged += checkBox_Font_CheckedChanged;
             // 
+            // richTextBox_Results
+            // 
+            richTextBox_Results.Location = new Point(1511, 391);
+            richTextBox_Results.Name = "richTextBox_Results";
+            richTextBox_Results.Size = new Size(610, 780);
+            richTextBox_Results.TabIndex = 20;
+            richTextBox_Results.Text = "";
+            // 
+            // checkedListBox_Results
+            // 
+            checkedListBox_Results.FormattingEnabled = true;
+            checkedListBox_Results.Items.AddRange(new object[] { "Margins", "Font", "Pictures", "Tables" });
+            checkedListBox_Results.Location = new Point(1511, 151);
+            checkedListBox_Results.Name = "checkedListBox_Results";
+            checkedListBox_Results.Size = new Size(610, 224);
+            checkedListBox_Results.TabIndex = 21;
+            // 
+            // numericUpDown_Interval
+            // 
+            numericUpDown_Interval.DecimalPlaces = 2;
+            numericUpDown_Interval.Increment = new decimal(new int[] { 5, 0, 0, 131072 });
+            numericUpDown_Interval.Location = new Point(37, 696);
+            numericUpDown_Interval.Maximum = new decimal(new int[] { 3, 0, 0, 0 });
+            numericUpDown_Interval.Minimum = new decimal(new int[] { 5, 0, 0, 65536 });
+            numericUpDown_Interval.Name = "numericUpDown_Interval";
+            numericUpDown_Interval.Size = new Size(300, 47);
+            numericUpDown_Interval.TabIndex = 22;
+            numericUpDown_Interval.Value = new decimal(new int[] { 115, 0, 0, 131072 });
+            // 
+            // label_Interval
+            // 
+            label_Interval.AutoSize = true;
+            label_Interval.Location = new Point(34, 652);
+            label_Interval.Name = "label_Interval";
+            label_Interval.Size = new Size(115, 41);
+            label_Interval.TabIndex = 23;
+            label_Interval.Text = "Interval";
+            // 
+            // checkBox_Interval
+            // 
+            checkBox_Interval.AutoSize = true;
+            checkBox_Interval.Checked = true;
+            checkBox_Interval.CheckState = CheckState.Checked;
+            checkBox_Interval.Location = new Point(37, 607);
+            checkBox_Interval.Name = "checkBox_Interval";
+            checkBox_Interval.Size = new Size(153, 45);
+            checkBox_Interval.TabIndex = 24;
+            checkBox_Interval.Text = "Interval";
+            checkBox_Interval.UseVisualStyleBackColor = true;
+            checkBox_Interval.CheckedChanged += checkBox_Interval_CheckedChanged;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(17F, 41F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(2275, 1241);
+            Controls.Add(checkBox_Interval);
+            Controls.Add(label_Interval);
+            Controls.Add(numericUpDown_Interval);
+            Controls.Add(checkedListBox_Results);
+            Controls.Add(richTextBox_Results);
             Controls.Add(checkBox_Font);
             Controls.Add(checkBox_Margins);
             Controls.Add(checkBox_Tables);
@@ -265,6 +327,7 @@
             ((System.ComponentModel.ISupportInitialize)numericUpDown_BottomMargin).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown_RightMargin).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown_FontSize).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown_Interval).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -291,5 +354,10 @@
         private CheckBox checkBox_Tables;
         private CheckBox checkBox_Margins;
         private CheckBox checkBox_Font;
+        private RichTextBox richTextBox_Results;
+        private CheckedListBox checkedListBox_Results;
+        private NumericUpDown numericUpDown_Interval;
+        private Label label_Interval;
+        private CheckBox checkBox_Interval;
     }
 }

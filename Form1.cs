@@ -2,6 +2,8 @@
 
 public partial class Form1 : Form
 {
+    private DocxParser docxParser = new DocxParser(new AnalyzeItem());
+
     public Form1()
     {
         InitializeComponent();
@@ -18,7 +20,7 @@ public partial class Form1 : Form
         if (openFileDialog.ShowDialog() == DialogResult.OK)
         {
             string filePath = openFileDialog.FileName;
-            DocxParser.ParseWordDocument(filePath.ToLower(), richTextBox_DOCXPreview);
+            docxParser.ParseWordDocument(filePath.ToLower(), richTextBox_DOCXPreview);
         }
     }
 
@@ -34,7 +36,7 @@ public partial class Form1 : Form
 
     private void checkBox_Margins_CheckedChanged(object sender, EventArgs e)
     {
-        ToggleVisibility(checkBox_Margins.Checked,
+        ToggleAvailability(checkBox_Margins.Checked,
                         label_Top, label_Bottom, label_Left, label_Right,
                         numericUpDown_TopMargin, numericUpDown_BottomMargin,
                         numericUpDown_LeftMargin, numericUpDown_RightMargin);
@@ -43,15 +45,20 @@ public partial class Form1 : Form
 
     private void checkBox_Font_CheckedChanged(object sender, EventArgs e)
     {
-        ToggleVisibility(checkBox_Font.Checked,
+        ToggleAvailability(checkBox_Font.Checked,
                         label_Font, label_Size,
                         comboBox_Fonts,
                         numericUpDown_FontSize);
     }
 
-    private void ToggleVisibility(bool isVisible, params Control[] controls)
+    private void ToggleAvailability(bool isAvailable, params Control[] controls)
     {
-        foreach (var control in controls) { control.Visible = isVisible; }
+        foreach (var control in controls) { control.Enabled = isAvailable; }
     }
 
+    private void checkBox_Interval_CheckedChanged(object sender, EventArgs e)
+    {
+        ToggleAvailability(checkBox_Interval.Checked,
+                           label_Interval, numericUpDown_Interval);
+    }
 }

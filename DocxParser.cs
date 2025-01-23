@@ -10,7 +10,19 @@ namespace DocumentAnalyzer;
 
 internal class DocxParser
 {
-    public static void ParseWordDocument(string filePath, RichTextBox richTextBox)
+    private AnalyzeItem analyzeItem;
+
+    public DocxParser(AnalyzeItem item)
+    {
+        analyzeItem = new AnalyzeItem();
+    }
+
+    public void CompareItems(AnalyzeItem itemToCompareWith)
+    {
+        //TODO
+    }
+
+    public void ParseWordDocument(string filePath, RichTextBox richTextBox)
     {
         try
         {
@@ -33,8 +45,8 @@ internal class DocxParser
                 return;
             }
 
-            ExtractMargins(mainPartBody, richTextBox);
-            ExtractStyles(mainPart, richTextBox);
+            ExtractMargins(mainPartBody);
+            ExtractStyles(mainPart);
             ParseParagraphs(mainPartBody, richTextBox);
         }
         catch (Exception ex)
@@ -43,7 +55,7 @@ internal class DocxParser
         }
     }
 
-    private static void ExtractMargins(Body body, RichTextBox richTextBox)
+    private void ExtractMargins(Body body)
     {
         var sectionProps = body.Elements<SectionProperties>().FirstOrDefault();
         if (sectionProps != null)
@@ -51,48 +63,48 @@ internal class DocxParser
             var pageMargins = sectionProps.GetFirstChild<PageMargin>();
             if (pageMargins != null)
             {
-                richTextBox.Text += "Margins:\n\n";
-                richTextBox.Text += $"  Top: {pageMargins.Top} twips\n";
-                richTextBox.Text += $"  Bottom: {pageMargins.Bottom} twips\n";
-                richTextBox.Text += $"  Left: {pageMargins.Left} twips\n";
-                richTextBox.Text += $"  Right: {pageMargins.Right} twips\n";
+                analyzeItem.Margin = new Margin(pageMargins.Top ?? 0,
+                                                pageMargins.Bottom ?? 0,
+                                                pageMargins.Left ?? 0,
+                                                pageMargins.Right ?? 0);
             }
         }
     }
 
-    private static void ExtractStyles(MainDocumentPart mdp, RichTextBox richTextBox)
+    private void ExtractStyles(MainDocumentPart mdp)
     {
         var stylesPart = mdp.StyleDefinitionsPart;
         if (stylesPart != null)
         {
-            richTextBox.Text += "Styles:\n\n";
-
             var stylesProps = stylesPart.Styles;
             if (stylesProps != null)
             {
                 var styles = stylesProps.Elements<Style>();
                 foreach (var style in styles)
                 {
-                    richTextBox.Text += $"Style ID: {style.StyleId}, Name: {style.StyleName?.Val}{Environment.NewLine}";
-
                     var runProps = style.StyleRunProperties;
                     if (runProps != null)
                     {
+                        FontInfo fontInfo = new FontInfo();
                         var runFonts = runProps.GetFirstChild<RunFonts>();
                         if (runFonts != null)
-                        {
-                            richTextBox.Text += $"  Default Font: {runFonts.Ascii ?? "Not Set"}{Environment.NewLine}";
+                        { 
+                            fontInfo.Name = $"{runFonts.Ascii ?? "Not Set"}";
                         }
 
                         var fontSize = runProps.GetFirstChild<DocumentFormat.OpenXml.Wordprocessing.FontSize>();
                         if (fontSize != null)
                         {
-                            richTextBox.Text += $"  Default Font Size: {fontSize.Val} (in half-points){Environment.NewLine}";
+                            if (fontSize.Val != null)
+                            {
+                                fontInfo.Size = (double)(Convert.ToInt32(fontSize.Val)) / 2 ;
+                            }
                         }
+
+                        analyzeItem.FontInfo = fontInfo;
                     }
                 }
 
-                richTextBox.Text += "\n";
             }
         }
     }
