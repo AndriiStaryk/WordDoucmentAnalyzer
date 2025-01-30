@@ -51,6 +51,7 @@
             numericUpDown_Interval = new NumericUpDown();
             label_Interval = new Label();
             checkBox_Interval = new CheckBox();
+            button_GenerateDoc = new Button();
             ((System.ComponentModel.ISupportInitialize)numericUpDown_TopMargin).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown_LeftMargin).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown_BottomMargin).BeginInit();
@@ -291,11 +292,22 @@
             checkBox_Interval.UseVisualStyleBackColor = true;
             checkBox_Interval.CheckedChanged += checkBox_Interval_CheckedChanged;
             // 
+            // button_GenerateDoc
+            // 
+            button_GenerateDoc.Location = new Point(945, 63);
+            button_GenerateDoc.Name = "button_GenerateDoc";
+            button_GenerateDoc.Size = new Size(188, 58);
+            button_GenerateDoc.TabIndex = 25;
+            button_GenerateDoc.Text = "Generate";
+            button_GenerateDoc.UseVisualStyleBackColor = true;
+            button_GenerateDoc.Click += button_GenerateDoc_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(17F, 41F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(2275, 1241);
+            Controls.Add(button_GenerateDoc);
             Controls.Add(checkBox_Interval);
             Controls.Add(label_Interval);
             Controls.Add(numericUpDown_Interval);
@@ -359,5 +371,6 @@
         private NumericUpDown numericUpDown_Interval;
         private Label label_Interval;
         private CheckBox checkBox_Interval;
+        private Button button_GenerateDoc;
     }
 }

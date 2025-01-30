@@ -10,16 +10,19 @@ namespace DocumentAnalyzer;
 
 internal class DocxParser
 {
-    private AnalyzeItem analyzeItem;
+    private AnalyzeItem _analyzeItem = new AnalyzeItem();
 
-    public DocxParser(AnalyzeItem item)
-    {
-        analyzeItem = new AnalyzeItem();
-    }
-
+    string copyFilePath = Path.Combine(Application.StartupPath, "modified_template.docx");
+    
     public void CompareItems(AnalyzeItem itemToCompareWith)
     {
-        
+
+    }
+
+    public void GenerateDocument(DocumentMetaData data)
+    {
+        CreateCopyOfTemplate();
+        //TODO: generate document
     }
 
     public void ParseWordDocument(string filePath, RichTextBox richTextBox)
@@ -63,7 +66,7 @@ internal class DocxParser
             var pageMargins = sectionProps.GetFirstChild<PageMargin>();
             if (pageMargins != null)
             {
-                analyzeItem.Margin = new Margin((pageMargins.Top) ?? 0,
+                _analyzeItem.Margin = new Margin((pageMargins.Top) ?? 0,
                                                 pageMargins.Bottom ?? 0,
                                                 pageMargins.Left ?? 0,
                                                 pageMargins.Right ?? 0);
@@ -88,7 +91,7 @@ internal class DocxParser
                         FontInfo fontInfo = new FontInfo();
                         var runFonts = runProps.GetFirstChild<RunFonts>();
                         if (runFonts != null)
-                        { 
+                        {
                             fontInfo.Name = $"{runFonts.Ascii ?? "Not Set"}";
                         }
 
@@ -97,11 +100,11 @@ internal class DocxParser
                         {
                             if (fontSize.Val != null)
                             {
-                                fontInfo.Size = (double)(Convert.ToInt32(fontSize.Val)) / 2 ;
+                                fontInfo.Size = (double)(Convert.ToInt32(fontSize.Val)) / 2;
                             }
                         }
 
-                        analyzeItem.FontInfo = fontInfo;
+                        _analyzeItem.FontInfo = fontInfo;
                     }
                 }
 
@@ -111,7 +114,7 @@ internal class DocxParser
     private void ParseParagraphs(Body body, WordprocessingDocument wordDoc, RichTextBox richTextBox)
     {
         //For debuggging purposes
-        richTextBox.Text += analyzeItem.ToString();
+        //richTextBox.Text += analyzeItem.ToString();
         var paragraphs = body.Elements<DocumentFormat.OpenXml.Wordprocessing.Paragraph>();
 
         foreach (var paragraph in paragraphs)
@@ -126,7 +129,7 @@ internal class DocxParser
             {
                 var runProperties = run.RunProperties;
                 string fontName = "Default";
-                double fontSizeValue = 11.0; 
+                double fontSizeValue = 11.0;
 
                 if (runProperties != null)
                 {
@@ -195,7 +198,13 @@ internal class DocxParser
                 }
             }
         }
-        return 11.0; 
+        return 11.0;
     }
 
+
+    public void CreateCopyOfTemplate()
+    {
+        string originalFilePath = Path.Combine(Application.StartupPath, "Resources", "diaryFixed.docx");
+        File.Copy(originalFilePath, copyFilePath, true);
+    }
 }

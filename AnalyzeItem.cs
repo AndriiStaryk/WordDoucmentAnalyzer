@@ -7,6 +7,11 @@ using System.Threading.Tasks;
 
 namespace DocumentAnalyzer;
 
+
+/// <summary>
+/// This class will be used for future implementation of "Bad policeman" method
+/// </summary>
+
 internal struct AnalyzeItem
 {
     public Margin? Margin { get; set; }
