@@ -19,7 +19,7 @@ internal class DocxParser
 
     public void CompareItems(AnalyzeItem itemToCompareWith)
     {
-        //TODO
+        
     }
 
     public void ParseWordDocument(string filePath, RichTextBox richTextBox)
@@ -47,7 +47,7 @@ internal class DocxParser
 
             ExtractMargins(mainPartBody);
             ExtractStyles(mainPart);
-            ParseParagraphs(mainPartBody, richTextBox);
+            ParseParagraphs(mainPartBody, wordDoc, richTextBox);
         }
         catch (Exception ex)
         {
@@ -63,7 +63,7 @@ internal class DocxParser
             var pageMargins = sectionProps.GetFirstChild<PageMargin>();
             if (pageMargins != null)
             {
-                analyzeItem.Margin = new Margin(pageMargins.Top ?? 0,
+                analyzeItem.Margin = new Margin((pageMargins.Top) ?? 0,
                                                 pageMargins.Bottom ?? 0,
                                                 pageMargins.Left ?? 0,
                                                 pageMargins.Right ?? 0);
@@ -108,24 +108,94 @@ internal class DocxParser
             }
         }
     }
-    private static void ParseParagraphs(Body body, RichTextBox richTextBox)
+    private void ParseParagraphs(Body body, WordprocessingDocument wordDoc, RichTextBox richTextBox)
     {
+        //For debuggging purposes
+        richTextBox.Text += analyzeItem.ToString();
         var paragraphs = body.Elements<DocumentFormat.OpenXml.Wordprocessing.Paragraph>();
+
         foreach (var paragraph in paragraphs)
         {
             richTextBox.Text += $"Text: {paragraph.InnerText}\n";
 
-            var paragraphProps = paragraph.ParagraphProperties;
-            if (paragraphProps != null)
+            string lastFontName = "";
+            double lastFontSize = 0;
+
+            var runs = paragraph.Elements<DocumentFormat.OpenXml.Wordprocessing.Run>();
+            foreach (var run in runs)
             {
-                var spacing = paragraphProps.SpacingBetweenLines;
-                if (spacing != null)
+                var runProperties = run.RunProperties;
+                string fontName = "Default";
+                double fontSizeValue = 11.0; 
+
+                if (runProperties != null)
                 {
-                    richTextBox.Text += $"  Line Spacing: {spacing.Line ?? "Default"} (in 20ths of a point)\n";
+                    var runFonts = runProperties.GetFirstChild<RunFonts>();
+                    if (runFonts != null)
+                    {
+                        fontName = runFonts.Ascii ?? runFonts.HighAnsi ?? "Default";
+                    }
+
+                    var fontSize = runProperties.GetFirstChild<DocumentFormat.OpenXml.Wordprocessing.FontSize>();
+                    if (fontSize?.Val != null)
+                    {
+                        fontSizeValue = Convert.ToInt32(fontSize.Val) / 2.0;
+                    }
+                }
+                else
+                {
+                    var paraStyleId = paragraph.ParagraphProperties?.ParagraphStyleId?.Val;
+                    if (paraStyleId != null)
+                    {
+                        fontName = GetFontFromStyle(wordDoc, paraStyleId);
+                        fontSizeValue = GetFontSizeFromStyle(wordDoc, paraStyleId);
+                    }
+                }
+
+                if (fontName != lastFontName || fontSizeValue != lastFontSize)
+                {
+                    richTextBox.Text += $"  Font: {fontName}, Size: {fontSizeValue}pt\n";
+                    lastFontName = fontName;
+                    lastFontSize = fontSizeValue;
                 }
             }
-
             richTextBox.Text += "\n";
         }
     }
+
+    private string GetFontFromStyle(WordprocessingDocument wordDoc, string styleId)
+    {
+        var stylesPart = wordDoc.MainDocumentPart.StyleDefinitionsPart;
+        if (stylesPart != null)
+        {
+            var style = stylesPart.Styles.Elements<Style>().FirstOrDefault(s => s.StyleId == styleId);
+            if (style != null)
+            {
+                var runProps = style.StyleRunProperties;
+                var runFonts = runProps?.GetFirstChild<RunFonts>();
+                return runFonts?.Ascii ?? runFonts?.HighAnsi ?? "Default";
+            }
+        }
+        return "Default";
+    }
+
+    private double GetFontSizeFromStyle(WordprocessingDocument wordDoc, string styleId)
+    {
+        var stylesPart = wordDoc.MainDocumentPart.StyleDefinitionsPart;
+        if (stylesPart != null)
+        {
+            var style = stylesPart.Styles.Elements<Style>().FirstOrDefault(s => s.StyleId == styleId);
+            if (style != null)
+            {
+                var runProps = style.StyleRunProperties;
+                var fontSize = runProps?.GetFirstChild<DocumentFormat.OpenXml.Wordprocessing.FontSize>();
+                if (fontSize?.Val != null)
+                {
+                    return Convert.ToInt32(fontSize.Val) / 2.0;
+                }
+            }
+        }
+        return 11.0; 
+    }
+
 }
