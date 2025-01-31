@@ -6,12 +6,7 @@ using System.Threading.Tasks;
 
 namespace DocumentAnalyzer;
 
-public enum Gender
-{
-    Male,
-    Female
-}
-internal class DocumentMetaData
+internal struct DocumentMetaData
 {
     public string NominativeCaseName { get; set; }
     public string GenitiveCaseName { get; set; }

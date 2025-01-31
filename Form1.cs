@@ -2,7 +2,7 @@
 
 public partial class Form1 : Form
 {
-    private DocxParser _docxParser = new DocxParser();
+    private DocxManager _docxManager = new DocxManager();
 
     public Form1()
     {
@@ -20,7 +20,7 @@ public partial class Form1 : Form
         if (openFileDialog.ShowDialog() == DialogResult.OK)
         {
             string filePath = openFileDialog.FileName;
-            _docxParser.ParseWordDocument(filePath.ToLower(), richTextBox_DOCXPreview);
+            _docxManager.ParseWordDocument(filePath.ToLower(), richTextBox_DOCXPreview);
         }
     }
 
@@ -63,7 +63,10 @@ public partial class Form1 : Form
     }
 
     private void button_GenerateDoc_Click(object sender, EventArgs e)
-    {
-        _docxParser.GenerateDocument(new DocumentMetaData());
+    { 
+        MetaDataForm metaDataForm = new MetaDataForm();
+        metaDataForm.FormClosed += (s, args) => this.Show();
+        this.Hide(); 
+        metaDataForm.Show();
     }
 }

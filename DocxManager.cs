@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DocumentAnalyzer;
 
-internal class DocxParser
+internal class DocxManager
 {
     private AnalyzeItem _analyzeItem = new AnalyzeItem();
 
