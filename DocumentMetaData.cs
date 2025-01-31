@@ -24,8 +24,8 @@ internal class DocumentMetaData
     public string PracticePlace { get; set; }
     public string Group {  get; set; }
 
-    public string Mentors { get; set; }
+    public string MentorsFromDepartment { get; set; }
 
-    public string MainMentor { get; set; }
+    public string MentorsFromFaculty { get; set; }
    
 }
