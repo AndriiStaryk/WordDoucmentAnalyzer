@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace DocumentAnalyzer;
 
@@ -13,7 +14,7 @@ internal class DocxManager
     private AnalyzeItem _analyzeItem = new AnalyzeItem();
 
     string copyFilePath = Path.Combine(Application.StartupPath, "modified_template.docx");
-    
+
     public void CompareItems(AnalyzeItem itemToCompareWith)
     {
 
@@ -22,7 +23,21 @@ internal class DocxManager
     public void GenerateDocument(DocumentMetaData data)
     {
         CreateCopyOfTemplate();
-        //TODO: generate document
+        
+        var replacements = new Dictionary<string, string>
+        {
+            { "{{NominativeCaseName}}", data.NominativeCaseName },
+            { "{{GenitiveCaseName}}", data.GenitiveCaseName },
+            { "{{Gender}}", data.Gender.ToDescription() },
+            { "{{StartDate}}", data.StartDate.ToShortDateString() },
+            { "{{EndDate}}", data.EndDate.ToShortDateString() },
+            { "{{PracticePlace}}", data.PracticePlace },
+            { "{{Group}}", data.Group },
+            { "{{MentorsFromDepartment}}", data.MentorsFromDepartment },
+            { "{{MentorsFromFaculty}}", data.MentorsFromFaculty }
+        };
+
+        ReplacePlaceholders(copyFilePath, replacements);
     }
 
     public void ParseWordDocument(string filePath, RichTextBox richTextBox)
@@ -206,5 +221,96 @@ internal class DocxManager
     {
         string originalFilePath = Path.Combine(Application.StartupPath, "Resources", "diaryFixed.docx");
         File.Copy(originalFilePath, copyFilePath, true);
+    }
+
+
+    public void ReplacePlaceholders(string filePath, Dictionary<string, string> replacements)
+    {
+
+        using WordprocessingDocument doc = WordprocessingDocument.Open(filePath, true);
+        
+        MainDocumentPart mainPart = doc.MainDocumentPart;
+        if (mainPart == null)
+        {
+            throw new InvalidOperationException("Main document part not found.");
+        }
+
+        
+        var paragraphs = mainPart.Document.Body.Elements<DocumentFormat.OpenXml.Wordprocessing.Paragraph>();
+
+        
+        foreach (var paragraph in paragraphs)
+        {           
+            string paragraphText = paragraph.InnerText;
+
+            foreach (var replacement in replacements)
+            {
+                if (paragraphText.Contains(replacement.Key))
+                {
+                    ReplaceTextInParagraph(paragraph, replacement.Key, replacement.Value);
+                }
+            }
+        }
+
+        mainPart.Document.Save();
+    }
+
+    private void ReplaceTextInParagraph(Paragraph paragraph, string placeholder, string replacementText)
+    {
+        string paragraphText = string.Join("", paragraph.Elements<Run>().Select(run => run.InnerText));
+
+        if (paragraphText.Contains(placeholder))
+        {
+            string[] parts = paragraphText.Split(new[] { placeholder }, StringSplitOptions.None);
+
+            foreach (Run run in paragraph.Elements<Run>())
+            {
+                Text text = run.Elements<Text>().FirstOrDefault();
+                if (text != null)
+                {
+                    text.Text = ""; 
+                }
+            }
+
+            int runIndex = 0;
+            var runs = paragraph.Elements<Run>().ToList();
+
+            for (int i = 0; i < parts.Length; i++)
+            {
+                if (!string.IsNullOrEmpty(parts[i]))
+                {
+                    if (runIndex < runs.Count)
+                    {
+                        Text text = runs[runIndex].Elements<Text>().FirstOrDefault();
+                        if (text != null)
+                        {
+                            text.Text = parts[i];
+                        }
+                        runIndex++;
+                    }
+                    else
+                    {
+                        paragraph.AppendChild(new Run(new Text(parts[i])));
+                    }
+                }
+
+                if (i < parts.Length - 1)
+                {
+                    if (runIndex < runs.Count)
+                    {
+                        Text text = runs[runIndex].Elements<Text>().FirstOrDefault();
+                        if (text != null)
+                        {
+                            text.Text = replacementText;
+                        }
+                        runIndex++;
+                    }
+                    else
+                    {
+                        paragraph.AppendChild(new Run(new Text(replacementText)));
+                    }
+                }
+            }
+        }
     }
 }

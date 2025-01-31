@@ -52,34 +52,34 @@
             // 
             textBox_NominativeCaseName.Location = new Point(264, 98);
             textBox_NominativeCaseName.Name = "textBox_NominativeCaseName";
-            textBox_NominativeCaseName.Size = new Size(250, 47);
+            textBox_NominativeCaseName.Size = new Size(646, 47);
             textBox_NominativeCaseName.TabIndex = 0;
             // 
             // textBox_GenitiveCaseName
             // 
             textBox_GenitiveCaseName.Location = new Point(264, 210);
             textBox_GenitiveCaseName.Name = "textBox_GenitiveCaseName";
-            textBox_GenitiveCaseName.Size = new Size(250, 47);
+            textBox_GenitiveCaseName.Size = new Size(646, 47);
             textBox_GenitiveCaseName.TabIndex = 1;
             // 
             // comboBox_Gender
             // 
             comboBox_Gender.FormattingEnabled = true;
-            comboBox_Gender.Location = new Point(184, 305);
+            comboBox_Gender.Location = new Point(264, 311);
             comboBox_Gender.Name = "comboBox_Gender";
             comboBox_Gender.Size = new Size(302, 49);
             comboBox_Gender.TabIndex = 2;
             // 
             // dateTimePicker_StartDate
             // 
-            dateTimePicker_StartDate.Location = new Point(184, 424);
+            dateTimePicker_StartDate.Location = new Point(103, 424);
             dateTimePicker_StartDate.Name = "dateTimePicker_StartDate";
             dateTimePicker_StartDate.Size = new Size(500, 47);
             dateTimePicker_StartDate.TabIndex = 3;
             // 
             // dateTimePicker_EndDate
             // 
-            dateTimePicker_EndDate.Location = new Point(820, 434);
+            dateTimePicker_EndDate.Location = new Point(720, 425);
             dateTimePicker_EndDate.Name = "dateTimePicker_EndDate";
             dateTimePicker_EndDate.Size = new Size(500, 47);
             dateTimePicker_EndDate.TabIndex = 4;
@@ -114,7 +114,7 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(729, 424);
+            label4.Location = new Point(643, 430);
             label4.Name = "label4";
             label4.Size = new Size(53, 41);
             label4.TabIndex = 8;
@@ -122,30 +122,30 @@
             // 
             // textBox_PracticePlace
             // 
-            textBox_PracticePlace.Location = new Point(372, 529);
+            textBox_PracticePlace.Location = new Point(357, 529);
             textBox_PracticePlace.Name = "textBox_PracticePlace";
-            textBox_PracticePlace.Size = new Size(250, 47);
+            textBox_PracticePlace.Size = new Size(863, 47);
             textBox_PracticePlace.TabIndex = 9;
             // 
             // textBox_Group
             // 
-            textBox_Group.Location = new Point(184, 647);
+            textBox_Group.Location = new Point(177, 644);
             textBox_Group.Name = "textBox_Group";
             textBox_Group.Size = new Size(250, 47);
             textBox_Group.TabIndex = 10;
             // 
             // textBox_MentorsDepartment
             // 
-            textBox_MentorsDepartment.Location = new Point(775, 760);
+            textBox_MentorsDepartment.Location = new Point(720, 760);
             textBox_MentorsDepartment.Name = "textBox_MentorsDepartment";
-            textBox_MentorsDepartment.Size = new Size(250, 47);
+            textBox_MentorsDepartment.Size = new Size(500, 47);
             textBox_MentorsDepartment.TabIndex = 11;
             // 
             // textBox_MentorsFaculty
             // 
             textBox_MentorsFaculty.Location = new Point(578, 865);
             textBox_MentorsFaculty.Name = "textBox_MentorsFaculty";
-            textBox_MentorsFaculty.Size = new Size(250, 47);
+            textBox_MentorsFaculty.Size = new Size(642, 47);
             textBox_MentorsFaculty.TabIndex = 12;
             // 
             // label5
