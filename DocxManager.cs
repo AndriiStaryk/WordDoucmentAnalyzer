@@ -257,57 +257,57 @@ internal class DocxManager
 
     private void ReplaceTextInParagraph(Paragraph paragraph, string placeholder, string replacementText)
     {
+ 
         string paragraphText = string.Join("", paragraph.Elements<Run>().Select(run => run.InnerText));
 
         if (paragraphText.Contains(placeholder))
         {
-            string[] parts = paragraphText.Split(new[] { placeholder }, StringSplitOptions.None);
+            int placeholderStart = paragraphText.IndexOf(placeholder);
+            int placeholderEnd = placeholderStart + placeholder.Length;
+
+            // Iterate through the runs to find the runs that contain the placeholder
+            int currentPosition = 0;
+            List<Run> runsToUpdate = new List<Run>();
+            List<string> runTexts = new List<string>();
 
             foreach (Run run in paragraph.Elements<Run>())
             {
                 Text text = run.Elements<Text>().FirstOrDefault();
                 if (text != null)
                 {
-                    text.Text = ""; 
+                    int runStart = currentPosition;
+                    int runEnd = runStart + text.Text.Length;
+
+                    if (runStart < placeholderEnd && runEnd > placeholderStart)
+                    {
+                        runsToUpdate.Add(run);
+                        runTexts.Add(text.Text);
+                    }
+
+                    currentPosition += text.Text.Length;
                 }
             }
 
-            int runIndex = 0;
-            var runs = paragraph.Elements<Run>().ToList();
-
-            for (int i = 0; i < parts.Length; i++)
+            // Reconstruct the runs with the placeholder replaced
+            if (runsToUpdate.Count > 0)
             {
-                if (!string.IsNullOrEmpty(parts[i]))
-                {
-                    if (runIndex < runs.Count)
-                    {
-                        Text text = runs[runIndex].Elements<Text>().FirstOrDefault();
-                        if (text != null)
-                        {
-                            text.Text = parts[i];
-                        }
-                        runIndex++;
-                    }
-                    else
-                    {
-                        paragraph.AppendChild(new Run(new Text(parts[i])));
-                    }
-                }
+                string combinedText = string.Join("", runTexts);
+                int placeholderIndex = combinedText.IndexOf(placeholder);
 
-                if (i < parts.Length - 1)
+                if (placeholderIndex >= 0)
                 {
-                    if (runIndex < runs.Count)
+                    string before = combinedText.Substring(0, placeholderIndex);
+                    string after = combinedText.Substring(placeholderIndex + placeholder.Length);
+
+                    runsToUpdate[0].GetFirstChild<Text>().Text = before + replacementText;
+                    for (int i = 1; i < runsToUpdate.Count; i++)
                     {
-                        Text text = runs[runIndex].Elements<Text>().FirstOrDefault();
-                        if (text != null)
-                        {
-                            text.Text = replacementText;
-                        }
-                        runIndex++;
+                        runsToUpdate[i].GetFirstChild<Text>().Text = "";
                     }
-                    else
+
+                    if (!string.IsNullOrEmpty(after))
                     {
-                        paragraph.AppendChild(new Run(new Text(replacementText)));
+                        runsToUpdate[runsToUpdate.Count - 1].GetFirstChild<Text>().Text += after;
                     }
                 }
             }
