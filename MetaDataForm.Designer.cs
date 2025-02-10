@@ -39,13 +39,13 @@
             label4 = new Label();
             textBox_PracticePlace = new TextBox();
             textBox_Group = new TextBox();
-            textBox_MentorsDepartment = new TextBox();
-            textBox_MentorsFaculty = new TextBox();
             label5 = new Label();
             label6 = new Label();
             label7 = new Label();
             label8 = new Label();
             button_GenerateDoc = new Button();
+            richTextBox_MentorsDepartment = new RichTextBox();
+            richTextBox_MentorsFaculty = new RichTextBox();
             SuspendLayout();
             // 
             // textBox_NominativeCaseName
@@ -65,7 +65,7 @@
             // comboBox_Gender
             // 
             comboBox_Gender.FormattingEnabled = true;
-            comboBox_Gender.Location = new Point(264, 311);
+            comboBox_Gender.Location = new Point(63, 312);
             comboBox_Gender.Name = "comboBox_Gender";
             comboBox_Gender.Size = new Size(302, 49);
             comboBox_Gender.TabIndex = 2;
@@ -129,24 +129,10 @@
             // 
             // textBox_Group
             // 
-            textBox_Group.Location = new Point(177, 644);
+            textBox_Group.Location = new Point(660, 312);
             textBox_Group.Name = "textBox_Group";
             textBox_Group.Size = new Size(250, 47);
             textBox_Group.TabIndex = 10;
-            // 
-            // textBox_MentorsDepartment
-            // 
-            textBox_MentorsDepartment.Location = new Point(720, 760);
-            textBox_MentorsDepartment.Name = "textBox_MentorsDepartment";
-            textBox_MentorsDepartment.Size = new Size(500, 47);
-            textBox_MentorsDepartment.TabIndex = 11;
-            // 
-            // textBox_MentorsFaculty
-            // 
-            textBox_MentorsFaculty.Location = new Point(578, 865);
-            textBox_MentorsFaculty.Name = "textBox_MentorsFaculty";
-            textBox_MentorsFaculty.Size = new Size(642, 47);
-            textBox_MentorsFaculty.TabIndex = 12;
             // 
             // label5
             // 
@@ -160,7 +146,7 @@
             // label6
             // 
             label6.AutoSize = true;
-            label6.Location = new Point(63, 647);
+            label6.Location = new Point(546, 315);
             label6.Name = "label6";
             label6.Size = new Size(97, 41);
             label6.TabIndex = 14;
@@ -169,7 +155,7 @@
             // label7
             // 
             label7.AutoSize = true;
-            label7.Location = new Point(63, 760);
+            label7.Location = new Point(63, 687);
             label7.Name = "label7";
             label7.Size = new Size(633, 41);
             label7.TabIndex = 15;
@@ -178,7 +164,7 @@
             // label8
             // 
             label8.AutoSize = true;
-            label8.Location = new Point(63, 865);
+            label8.Location = new Point(63, 915);
             label8.Name = "label8";
             label8.Size = new Size(455, 41);
             label8.TabIndex = 16;
@@ -186,7 +172,7 @@
             // 
             // button_GenerateDoc
             // 
-            button_GenerateDoc.Location = new Point(72, 977);
+            button_GenerateDoc.Location = new Point(546, 1194);
             button_GenerateDoc.Name = "button_GenerateDoc";
             button_GenerateDoc.Size = new Size(486, 58);
             button_GenerateDoc.TabIndex = 17;
@@ -194,18 +180,34 @@
             button_GenerateDoc.UseVisualStyleBackColor = true;
             button_GenerateDoc.Click += button_GenerateDoc_Click;
             // 
+            // richTextBox_MentorsDepartment
+            // 
+            richTextBox_MentorsDepartment.Location = new Point(720, 687);
+            richTextBox_MentorsDepartment.Name = "richTextBox_MentorsDepartment";
+            richTextBox_MentorsDepartment.Size = new Size(612, 178);
+            richTextBox_MentorsDepartment.TabIndex = 18;
+            richTextBox_MentorsDepartment.Text = "";
+            // 
+            // richTextBox_MentorsFaculty
+            // 
+            richTextBox_MentorsFaculty.Location = new Point(720, 915);
+            richTextBox_MentorsFaculty.Name = "richTextBox_MentorsFaculty";
+            richTextBox_MentorsFaculty.Size = new Size(612, 174);
+            richTextBox_MentorsFaculty.TabIndex = 19;
+            richTextBox_MentorsFaculty.Text = "";
+            // 
             // MetaDataForm
             // 
             AutoScaleDimensions = new SizeF(17F, 41F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1735, 1103);
+            ClientSize = new Size(1735, 1365);
+            Controls.Add(richTextBox_MentorsFaculty);
+            Controls.Add(richTextBox_MentorsDepartment);
             Controls.Add(button_GenerateDoc);
             Controls.Add(label8);
             Controls.Add(label7);
             Controls.Add(label6);
             Controls.Add(label5);
-            Controls.Add(textBox_MentorsFaculty);
-            Controls.Add(textBox_MentorsDepartment);
             Controls.Add(textBox_Group);
             Controls.Add(textBox_PracticePlace);
             Controls.Add(label4);
@@ -236,12 +238,12 @@
         private Label label4;
         private TextBox textBox_PracticePlace;
         private TextBox textBox_Group;
-        private TextBox textBox_MentorsDepartment;
-        private TextBox textBox_MentorsFaculty;
         private Label label5;
         private Label label6;
         private Label label7;
         private Label label8;
         private Button button_GenerateDoc;
+        private RichTextBox richTextBox_MentorsDepartment;
+        private RichTextBox richTextBox_MentorsFaculty;
     }
 }

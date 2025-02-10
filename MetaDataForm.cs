@@ -29,8 +29,8 @@ public partial class MetaDataForm : Form
         textBox_GenitiveCaseName.Text = "Старика Андрія Сергійовича";
         textBox_Group.Text = "ТТП-32";
         textBox_PracticePlace.Text = "факультет комп'ютерних наук та кібернетики";
-        textBox_MentorsDepartment.Text = "Доц.Зубенко В.В., ас. Свистунов А.О., ас. Шишацький А.В., ас. Галавай О.М., ас. Пушкаренко Ю.В.";
-        textBox_MentorsFaculty.Text = "зав. декана Омельчук Людмила Леонідівна";
+        richTextBox_MentorsDepartment.Text = "Доц.Зубенко В.В., ас. Свистунов А.О., ас. Шишацький А.В., ас. Галавай О.М., ас. Пушкаренко Ю.В.";
+        richTextBox_MentorsFaculty.Text = "зав. декана Омельчук Людмила Леонідівна";
     }
 
     private void button_GenerateDoc_Click(object sender, EventArgs e)
@@ -50,8 +50,8 @@ public partial class MetaDataForm : Form
             EndDate = dateTimePicker_EndDate.Value,
             PracticePlace = textBox_PracticePlace.Text,
             Group = textBox_Group.Text,
-            MentorsFromDepartment = textBox_MentorsDepartment.Text,
-            MentorsFromFaculty = textBox_MentorsFaculty.Text
+            MentorsFromDepartment = richTextBox_MentorsDepartment.Text,
+            MentorsFromFaculty = richTextBox_MentorsFaculty.Text
         };
 
         _docxManager.GenerateDocument(docMetaData);
