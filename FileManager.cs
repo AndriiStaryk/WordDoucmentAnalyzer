@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -45,5 +46,10 @@ internal class FileManager
                 Marshal.FreeCoTaskMem(ppszPath); 
             }
         }
+    }
+
+    public static void OpenDocx(string filePath)
+    {
+        Process.Start(new ProcessStartInfo(filePath) { UseShellExecute = true });
     }
 }

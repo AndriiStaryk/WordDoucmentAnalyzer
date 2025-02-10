@@ -40,6 +40,7 @@ internal class DocxManager
         };
 
         ReplacePlaceholders(copyFilePath, replacements);
+        FileManager.OpenDocx(copyFilePath);
     }
 
     public void ParseWordDocument(string filePath, RichTextBox richTextBox)
