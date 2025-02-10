@@ -3,9 +3,11 @@ using DocumentFormat.OpenXml.Wordprocessing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+
 
 namespace DocumentAnalyzer;
 
@@ -13,7 +15,7 @@ internal class DocxManager
 {
     private AnalyzeItem _analyzeItem = new AnalyzeItem();
 
-    string copyFilePath = Path.Combine(Application.StartupPath, "modified_template.docx");
+    string copyFilePath = Path.Combine(FileManager.GetDownloadsFolderPath(), "practice_diary.docx");
 
     public void CompareItems(AnalyzeItem itemToCompareWith)
     {
