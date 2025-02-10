@@ -29,8 +29,9 @@ internal class DocxManager
         var replacements = new Dictionary<string, string>
         {
             { "{{NominativeCaseName}}", data.NominativeCaseName },
+            { "{{GenderNominativeCase}}", data.Gender.ToDescription() },
             { "{{GenitiveCaseName}}", data.GenitiveCaseName },
-            { "{{Gender}}", data.Gender.ToDescription() },
+            { "{{GenderGenitiveCase}}", data.Gender.ToDescription(true) },
             { "{{StartDate}}", data.StartDate.ToShortDateString() },
             { "{{EndDate}}", data.EndDate.ToShortDateString() },
             { "{{PracticePlace}}", data.PracticePlace },
