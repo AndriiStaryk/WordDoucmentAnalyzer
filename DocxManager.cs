@@ -239,24 +239,28 @@ internal class DocxManager
             throw new InvalidOperationException("Main document part not found.");
         }
 
-        
-        var paragraphs = mainPart.Document.Body.Elements<DocumentFormat.OpenXml.Wordprocessing.Paragraph>();
+        var paragraphs = mainPart.Document.Body.Descendants<Paragraph>();
 
-        
         foreach (var paragraph in paragraphs)
-        {           
-            string paragraphText = paragraph.InnerText;
-
-            foreach (var replacement in replacements)
-            {
-                if (paragraphText.Contains(replacement.Key))
-                {
-                    ReplaceTextInParagraph(paragraph, replacement.Key, replacement.Value);
-                }
-            }
+        {
+            SearchReplacementsAndReplace(paragraph, replacements);
         }
 
         mainPart.Document.Save();
+    }
+
+
+    private void SearchReplacementsAndReplace(Paragraph paragraph, Dictionary<string, string> replacements)
+    {
+        string paragraphText = paragraph.InnerText;
+
+        foreach (var replacement in replacements)
+        {
+            if (paragraphText.Contains(replacement.Key))
+            {
+                ReplaceTextInParagraph(paragraph, replacement.Key, replacement.Value);
+            }
+        }
     }
 
     private void ReplaceTextInParagraph(Paragraph paragraph, string placeholder, string replacementText)
