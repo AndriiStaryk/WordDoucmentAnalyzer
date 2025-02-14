@@ -22,5 +22,7 @@ internal struct DocumentMetaData
     public string MentorsFromDepartment { get; set; }
 
     public string MentorsFromFaculty { get; set; }
+
+    public string TaskDescription {  get; set; }
    
 }

@@ -51,7 +51,8 @@ public partial class MetaDataForm : Form
             PracticePlace = textBox_PracticePlace.Text,
             Group = textBox_Group.Text,
             MentorsFromDepartment = richTextBox_MentorsDepartment.Text,
-            MentorsFromFaculty = richTextBox_MentorsFaculty.Text
+            MentorsFromFaculty = richTextBox_MentorsFaculty.Text,
+            TaskDescription = richTextBox_TaskDescription.Text
         };
 
         _docxManager.GenerateDocument(docMetaData);
