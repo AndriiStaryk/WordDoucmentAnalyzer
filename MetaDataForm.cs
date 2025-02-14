@@ -12,7 +12,8 @@ namespace DocumentAnalyzer;
 
 public partial class MetaDataForm : Form
 {
-    DocxManager _docxManager = new DocxManager();
+    private DocxManager _docxManager = new DocxManager();
+    private List<DailyTask> _dailyTasks = new List<DailyTask>();
     public MetaDataForm()
     {
         InitializeComponent();
@@ -28,7 +29,7 @@ public partial class MetaDataForm : Form
         DataGridViewTextBoxColumn nameColumn = new DataGridViewTextBoxColumn();
         nameColumn.HeaderText = "Опис діяльності";
         nameColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-        nameColumn.FillWeight = 50;  
+        nameColumn.FillWeight = 50;
         dataGridView_DailyTasksTable.Columns.Add(nameColumn);
 
         DataGridViewCalendarColumn dateStartColumn = new DataGridViewCalendarColumn();
@@ -40,8 +41,13 @@ public partial class MetaDataForm : Form
         DataGridViewCalendarColumn dateEndColumn = new DataGridViewCalendarColumn();
         dateEndColumn.HeaderText = "Дата закінчення";
         dateEndColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-        dateEndColumn.FillWeight = 20; 
+        dateEndColumn.FillWeight = 20;
         dataGridView_DailyTasksTable.Columns.Add(dateEndColumn);
+
+
+        dataGridView_DailyTasksTable.RowsAdded += DataGridView_DailyTasksTable_RowsAdded;
+        dataGridView_DailyTasksTable.CellValueChanged += DataGridView_DailyTasksTable_CellValueChanged;
+        dataGridView_DailyTasksTable.RowsRemoved += DataGridView_DailyTasksTable_RowsRemoved;
 
         //Test Data
         textBox_NominativeCaseName.Text = "Старик Андрій Сергійович";
@@ -71,10 +77,54 @@ public partial class MetaDataForm : Form
             Group = textBox_Group.Text,
             MentorsFromDepartment = richTextBox_MentorsDepartment.Text,
             MentorsFromFaculty = richTextBox_MentorsFaculty.Text,
-            TaskDescription = richTextBox_TaskDescription.Text
+            TaskDescription = richTextBox_TaskDescription.Text,
+            DailyTasks = _dailyTasks
         };
 
         _docxManager.GenerateDocument(docMetaData);
+    }
+
+
+    private void DataGridView_DailyTasksTable_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+    {
+        if (e.RowIndex >= 0 && e.RowIndex < _dailyTasks.Count)
+        {
+            var task = _dailyTasks[e.RowIndex];
+
+            if (e.ColumnIndex == 0) 
+            {
+                task.TaskName = dataGridView_DailyTasksTable.Rows[e.RowIndex].Cells[e.ColumnIndex].Value?.ToString();
+            }
+            else if (e.ColumnIndex == 1)
+            {
+                task.StartDate = Convert.ToDateTime(dataGridView_DailyTasksTable.Rows[e.RowIndex].Cells[e.ColumnIndex].Value);
+            }
+            else if (e.ColumnIndex == 2)
+            {
+                task.EndDate = Convert.ToDateTime(dataGridView_DailyTasksTable.Rows[e.RowIndex].Cells[e.ColumnIndex].Value);
+            }
+
+            _dailyTasks[e.RowIndex] = task;
+        }
+    }
+
+    private void DataGridView_DailyTasksTable_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
+    {
+        for (int i = 0; i < e.RowCount; i++)
+        {
+            _dailyTasks.Add(new DailyTask());
+        }
+    }
+
+    private void DataGridView_DailyTasksTable_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
+    {
+        for (int i = 0; i < e.RowCount; i++)
+        {
+            if (e.RowIndex < _dailyTasks.Count)
+            {
+                _dailyTasks.RemoveAt(e.RowIndex);
+            }
+        }
     }
 
 }

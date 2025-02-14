@@ -11,4 +11,9 @@ struct DailyTask
     public string TaskName { get; set; }
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
+
+    public List<string> ToStringList()
+    {
+        return new List<string> { TaskName, StartDate.ToShortDateString(), EndDate.ToShortDateString() };
+    }
 }

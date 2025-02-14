@@ -179,7 +179,7 @@
             // 
             // button_GenerateDoc
             // 
-            button_GenerateDoc.Location = new Point(457, 1955);
+            button_GenerateDoc.Location = new Point(435, 1740);
             button_GenerateDoc.Name = "button_GenerateDoc";
             button_GenerateDoc.Size = new Size(486, 58);
             button_GenerateDoc.TabIndex = 17;
@@ -250,7 +250,7 @@
             dataGridView_DailyTasksTable.Location = new Point(32, 1359);
             dataGridView_DailyTasksTable.Name = "dataGridView_DailyTasksTable";
             dataGridView_DailyTasksTable.RowHeadersWidth = 102;
-            dataGridView_DailyTasksTable.Size = new Size(1262, 565);
+            dataGridView_DailyTasksTable.Size = new Size(1262, 319);
             dataGridView_DailyTasksTable.TabIndex = 22;
             // 
             // richTextBox_TaskDescription

@@ -1,6 +1,5 @@
 ﻿using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
-using DocumentFormat.OpenXml.Vml;
 using DocumentFormat.OpenXml.Wordprocessing;
 using System;
 using System.Collections.Generic;
@@ -43,7 +42,17 @@ internal class DocxManager
         };
 
         ReplacePlaceholders(copyFilePath, replacements);
-        ReplacePlaceholderWithTable(copyFilePath, "{{TaskDescriptionTable}}", data.TaskDescription);
+
+        List<string> taskDescriptionLines = SplitTextIntoLines(data.TaskDescription);
+        Table taskDescriptionTable = CreateSimpleTableBasedOnLines(taskDescriptionLines);
+        ReplacePlaceholderWithTable(copyFilePath, "{{TaskDescriptionTable}}", taskDescriptionTable);
+
+
+        List<List<string>> dailyTasksDescription = data.DailyTasks
+                                                        .Select(task => task.ToStringList())
+                                                        .ToList();
+        Table dailyTasksTable = CreateDailyTasksDescriptionTable(dailyTasksDescription);
+        ReplacePlaceholderWithTable(copyFilePath, "{{DailyTasksTable}}", dailyTasksTable);
 
         FileManager.OpenDocx(copyFilePath);
     }
@@ -52,7 +61,7 @@ internal class DocxManager
 
     public void CreateCopyOfTemplate()
     {
-        string originalFilePath = System.IO.Path.Combine(Application.StartupPath, "Resources", "diaryFixed.docx");
+        string originalFilePath = System.IO.Path.Combine(System.Windows.Forms.Application.StartupPath, "Resources", "diaryFixed.docx");
         File.Copy(originalFilePath, copyFilePath, true);
     }
 
@@ -72,7 +81,6 @@ internal class DocxManager
         {
             SearchReplacementsAndReplace(paragraph, replacements);
         }
-
 
         mainPart.Document.Save();
     }
@@ -149,7 +157,7 @@ internal class DocxManager
     }
 
 
-    private void ReplacePlaceholderWithTable(string filePath, string placeholder, string text)
+    private void ReplacePlaceholderWithTable(string filePath, string placeholder, Table table)
     {
         using WordprocessingDocument doc = WordprocessingDocument.Open(filePath, true);
 
@@ -165,17 +173,90 @@ internal class DocxManager
 
         if (paragraph != null)
         {
-            Table table = CreateTableBasedOnText(text);
             body.InsertAfter(table, paragraph);
             paragraph.Remove();
         }
 
         mainPart.Document.Save();
     }
-  
 
+    private Table CreateDailyTasksDescriptionTable(List<List<string>> rows, int minRowsCount = 28, int maxRowsCount = 28)
+    {
+        Table table = new Table(new TableProperties(
+            new TableWidth() { Width = "100%", Type = TableWidthUnitValues.Pct },
+            new TableBorders(
+                new TopBorder() { Val = BorderValues.Single, Size = 4 },
+                new BottomBorder() { Val = BorderValues.Single, Size = 4 },
+                new LeftBorder() { Val = BorderValues.Single, Size = 4 },
+                new RightBorder() { Val = BorderValues.Single, Size = 4 },
+                new InsideHorizontalBorder() { Val = BorderValues.Single, Size = 4 },
+                new InsideVerticalBorder() { Val = BorderValues.Single, Size = 4 }
+            )
+        ));
 
-    private Table CreateTableBasedOnText(string text, int minRowsCount = 23, int maxRowCount = 23)
+        List<string> firstHeaderRow = new List<string> { "№ з/п", "Назва робіт", "Термін виконання", "", "Примітки" };
+        List<string> secondHeaderRow = new List<string> { "", "", "з", "по", "" };
+
+        table.Append(CreateRow(firstHeaderRow, isHeader: true));
+        table.Append(CreateRow(secondHeaderRow, isHeader: true));
+
+        int rowsAdded = 2;
+        foreach (var row in rows.Take(maxRowsCount))
+        {
+            row.Insert(0, (rowsAdded - 1).ToString());
+            row.Insert(row.Count(), "");
+            table.Append(CreateRow(row));
+            rowsAdded++;
+        }
+
+        while (rowsAdded < minRowsCount)
+        {
+            table.Append(CreateRow(new List<string> { "", "", "", "", "" }));
+            rowsAdded++;
+        }
+
+        return table;
+    }
+
+    private TableRow CreateRow(List<string> columns, bool isHeader = false)
+    {
+        TableRow row = new TableRow();
+        int[] columnWidths = { 10, 50, 15, 15, 10 };
+
+        for (int i = 0; i < columns.Count; i++)
+        {
+            row.Append(CreateCell(columns[i], isHeader, columnWidths[i]));
+        }
+
+        return row;
+    }
+
+    private TableCell CreateCell(string text, bool isHeader, int widthPercentage)
+    {
+        return new TableCell(
+            new TableCellProperties(
+                new TableCellWidth() { Width = $"{widthPercentage}%", Type = TableWidthUnitValues.Pct },
+                new TableCellBorders(
+                    new TopBorder() { Val = BorderValues.Single, Size = 6 },
+                    new BottomBorder() { Val = BorderValues.Single, Size = 6 },
+                    new LeftBorder() { Val = BorderValues.Single, Size = 6 },
+                    new RightBorder() { Val = BorderValues.Single, Size = 6 }
+                ),
+                new Shading() { Val = ShadingPatternValues.Clear, Fill = "FFFFFF" }
+            ),
+            new Paragraph(
+                new Run(
+                    new RunProperties(
+                        new Bold() { Val = isHeader ? OnOffValue.FromBoolean(true) : OnOffValue.FromBoolean(false) }
+                    ),
+                    new Text(text) { Space = SpaceProcessingModeValues.Preserve }
+                )
+            )
+        );
+    }
+
+    private Table CreateSimpleTableBasedOnLines(List<string> lines,
+                                                int minRowsCount = 23, int maxRowsCount = 23)
     {
         Table table = new Table(new TableProperties(
             new TableWidth() { Width = "100%", Type = TableWidthUnitValues.Pct },
@@ -191,10 +272,9 @@ internal class DocxManager
 
         table.AppendChild(new TableGrid(new GridColumn() { Width = "5000" }));
 
-        List<string> lines = SplitTextIntoLines(text);
         int rowsAdded = 0;
 
-        foreach (string line in lines.Take(maxRowCount))
+        foreach (string line in lines.Take(maxRowsCount))
         {
             AddRow(table, line);
             rowsAdded++;

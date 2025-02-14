@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml.Presentation;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,5 +25,7 @@ internal struct DocumentMetaData
     public string MentorsFromFaculty { get; set; }
 
     public string TaskDescription {  get; set; }
+
+    public List<DailyTask> DailyTasks { get; set; }
    
 }
