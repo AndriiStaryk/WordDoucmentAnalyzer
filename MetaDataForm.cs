@@ -24,6 +24,25 @@ public partial class MetaDataForm : Form
 
         comboBox_Gender.SelectedIndex = 0;
 
+
+        DataGridViewTextBoxColumn nameColumn = new DataGridViewTextBoxColumn();
+        nameColumn.HeaderText = "Опис діяльності";
+        nameColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+        nameColumn.FillWeight = 50;  
+        dataGridView_DailyTasksTable.Columns.Add(nameColumn);
+
+        DataGridViewCalendarColumn dateStartColumn = new DataGridViewCalendarColumn();
+        dateStartColumn.HeaderText = "Дата початку";
+        dateStartColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+        dateStartColumn.FillWeight = 20;
+        dataGridView_DailyTasksTable.Columns.Add(dateStartColumn);
+
+        DataGridViewCalendarColumn dateEndColumn = new DataGridViewCalendarColumn();
+        dateEndColumn.HeaderText = "Дата закінчення";
+        dateEndColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+        dateEndColumn.FillWeight = 20; 
+        dataGridView_DailyTasksTable.Columns.Add(dateEndColumn);
+
         //Test Data
         textBox_NominativeCaseName.Text = "Старик Андрій Сергійович";
         textBox_GenitiveCaseName.Text = "Старика Андрія Сергійовича";
@@ -57,4 +76,5 @@ public partial class MetaDataForm : Form
 
         _docxManager.GenerateDocument(docMetaData);
     }
+
 }

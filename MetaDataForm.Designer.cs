@@ -47,9 +47,12 @@
             richTextBox_MentorsDepartment = new RichTextBox();
             richTextBox_MentorsFaculty = new RichTextBox();
             panel1 = new Panel();
-            label9 = new Label();
+            label10 = new Label();
+            dataGridView_DailyTasksTable = new DataGridView();
             richTextBox_TaskDescription = new RichTextBox();
+            label9 = new Label();
             panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridView_DailyTasksTable).BeginInit();
             SuspendLayout();
             // 
             // textBox_NominativeCaseName
@@ -176,7 +179,7 @@
             // 
             // button_GenerateDoc
             // 
-            button_GenerateDoc.Location = new Point(508, 1378);
+            button_GenerateDoc.Location = new Point(457, 1955);
             button_GenerateDoc.Name = "button_GenerateDoc";
             button_GenerateDoc.Size = new Size(486, 58);
             button_GenerateDoc.TabIndex = 17;
@@ -203,6 +206,8 @@
             // panel1
             // 
             panel1.AutoScroll = true;
+            panel1.Controls.Add(label10);
+            panel1.Controls.Add(dataGridView_DailyTasksTable);
             panel1.Controls.Add(richTextBox_TaskDescription);
             panel1.Controls.Add(label9);
             panel1.Controls.Add(textBox_NominativeCaseName);
@@ -226,8 +231,35 @@
             panel1.Dock = DockStyle.Fill;
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(1489, 871);
+            panel1.Size = new Size(1489, 2108);
             panel1.TabIndex = 20;
+            // 
+            // label10
+            // 
+            label10.AutoSize = true;
+            label10.Location = new Point(646, 2030);
+            label10.Name = "label10";
+            label10.Size = new Size(113, 41);
+            label10.TabIndex = 23;
+            label10.Text = "label10";
+            label10.Visible = false;
+            // 
+            // dataGridView_DailyTasksTable
+            // 
+            dataGridView_DailyTasksTable.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView_DailyTasksTable.Location = new Point(32, 1359);
+            dataGridView_DailyTasksTable.Name = "dataGridView_DailyTasksTable";
+            dataGridView_DailyTasksTable.RowHeadersWidth = 102;
+            dataGridView_DailyTasksTable.Size = new Size(1262, 565);
+            dataGridView_DailyTasksTable.TabIndex = 22;
+            // 
+            // richTextBox_TaskDescription
+            // 
+            richTextBox_TaskDescription.Location = new Point(682, 1046);
+            richTextBox_TaskDescription.Name = "richTextBox_TaskDescription";
+            richTextBox_TaskDescription.Size = new Size(612, 266);
+            richTextBox_TaskDescription.TabIndex = 21;
+            richTextBox_TaskDescription.Text = "";
             // 
             // label9
             // 
@@ -238,24 +270,17 @@
             label9.TabIndex = 20;
             label9.Text = "Завдання на практику";
             // 
-            // richTextBox_task
-            // 
-            richTextBox_TaskDescription.Location = new Point(682, 1046);
-            richTextBox_TaskDescription.Name = "richTextBox_task";
-            richTextBox_TaskDescription.Size = new Size(612, 266);
-            richTextBox_TaskDescription.TabIndex = 21;
-            richTextBox_TaskDescription.Text = "";
-            // 
             // MetaDataForm
             // 
             AutoScaleDimensions = new SizeF(17F, 41F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1489, 871);
+            ClientSize = new Size(1489, 2108);
             Controls.Add(panel1);
             Name = "MetaDataForm";
             Text = "MetaDataForm";
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridView_DailyTasksTable).EndInit();
             ResumeLayout(false);
         }
 
@@ -282,5 +307,7 @@
         private Panel panel1;
         private RichTextBox richTextBox_TaskDescription;
         private Label label9;
+        private DataGridView dataGridView_DailyTasksTable;
+        private Label label10;
     }
 }
