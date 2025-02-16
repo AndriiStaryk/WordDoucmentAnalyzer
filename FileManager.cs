@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace DocumentAnalyzer;
-internal class FileManager
+static class FileManager
 {
     private static readonly Guid FOLDERID_Downloads = new Guid("374DE290-123F-4565-9164-39C4925E467B");
 
@@ -51,5 +51,13 @@ internal class FileManager
     public static void OpenDocx(string filePath)
     {
         Process.Start(new ProcessStartInfo(filePath) { UseShellExecute = true });
+    }
+
+    public static string copyFilePath = System.IO.Path.Combine(FileManager.GetDownloadsFolderPath(), "practice_diary.docx");
+
+    public static void CreateCopyOfTemplate()
+    {
+        string originalFilePath = System.IO.Path.Combine(System.Windows.Forms.Application.StartupPath, "Resources", "diaryFixed.docx");
+        File.Copy(originalFilePath, copyFilePath, true);
     }
 }
