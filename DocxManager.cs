@@ -14,15 +14,6 @@ namespace DocumentAnalyzer;
 
 internal class DocxManager
 {
-    private AnalyzeItem _analyzeItem = new AnalyzeItem();
-
-    string copyFilePath = System.IO.Path.Combine(FileManager.GetDownloadsFolderPath(), "practice_diary.docx");
-
-    public void CompareItems(AnalyzeItem itemToCompareWith)
-    {
-
-    }
-
     public void GenerateDocument(DocumentMetaData data)
     {
         FileManager.CreateCopyOfTemplate();
@@ -41,26 +32,26 @@ internal class DocxManager
             { "{{MentorsFromFaculty}}", data.MentorsFromFaculty },
         };
 
-        ReplacePlaceholders(copyFilePath, replacements);
+        ReplacePlaceholders(replacements);
 
         List<string> taskDescriptionLines = SplitTextIntoLines(data.TaskDescription);
         Table taskDescriptionTable = TableGenerator.CreateSimpleTableBasedOnLines(taskDescriptionLines);
-        ReplacePlaceholderWithTable(copyFilePath, "{{TaskDescriptionTable}}", taskDescriptionTable);
+        ReplacePlaceholderWithTable("{{TaskDescriptionTable}}", taskDescriptionTable);
 
 
         List<List<string>> dailyTasksDescription = data.DailyTasks
                                                         .Select(task => task.ToStringList())
                                                         .ToList();
         Table dailyTasksTable = TableGenerator.CreateDailyTasksDescriptionTable(dailyTasksDescription);
-        ReplacePlaceholderWithTable(copyFilePath, "{{DailyTasksTable}}", dailyTasksTable);
+        ReplacePlaceholderWithTable("{{DailyTasksTable}}", dailyTasksTable);
 
-        FileManager.OpenDocx(copyFilePath);
+        FileManager.OpenDocx(FileManager.copyFilePath);
     }
 
-    public void ReplacePlaceholders(string filePath, Dictionary<string, string> replacements)
+    public void ReplacePlaceholders(Dictionary<string, string> replacements)
     {
-        using WordprocessingDocument doc = WordprocessingDocument.Open(filePath, true);
-        
+        using WordprocessingDocument doc = WordprocessingDocument.Open(FileManager.copyFilePath, true);
+
         MainDocumentPart mainPart = doc.MainDocumentPart;
         if (mainPart == null)
         {
@@ -73,7 +64,7 @@ internal class DocxManager
         {
             SearchReplacementsAndReplace(paragraph, replacements);
         }
-
+        
         mainPart.Document.Save();
     }
 
@@ -148,10 +139,9 @@ internal class DocxManager
         }
     }
 
-
-    private void ReplacePlaceholderWithTable(string filePath, string placeholder, Table table)
+    private void ReplacePlaceholderWithTable(string placeholder, Table table)
     {
-        using WordprocessingDocument doc = WordprocessingDocument.Open(filePath, true);
+        using WordprocessingDocument doc = WordprocessingDocument.Open(FileManager.copyFilePath, true);
 
         MainDocumentPart mainPart = doc.MainDocumentPart;
         if (mainPart == null)
@@ -159,8 +149,8 @@ internal class DocxManager
             throw new InvalidOperationException("Main document part not found.");
         }
 
-
         var body = mainPart.Document.Body;
+        
         var paragraph = body.Descendants<Paragraph>().FirstOrDefault(p => p.InnerText.Contains(placeholder));
 
         if (paragraph != null)
@@ -168,10 +158,9 @@ internal class DocxManager
             body.InsertAfter(table, paragraph);
             paragraph.Remove();
         }
-
+        
         mainPart.Document.Save();
     }
-
    
     private List<string> SplitTextIntoLines(string text, int maxCharactersPerRow = 68)
     {
@@ -199,6 +188,13 @@ internal class DocxManager
     }
 
 
+
+    private AnalyzeItem _analyzeItem = new AnalyzeItem();
+
+    public void CompareItems(AnalyzeItem itemToCompareWith)
+    {
+
+    }
     public void ParseWordDocument(string filePath, RichTextBox richTextBox)
     {
         try

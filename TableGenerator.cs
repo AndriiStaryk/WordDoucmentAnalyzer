@@ -66,12 +66,6 @@ static class TableGenerator
         return new TableCell(
             new TableCellProperties(
                 new TableCellWidth() { Width = $"{widthPercentage}%", Type = TableWidthUnitValues.Pct },
-                new TableCellBorders(
-                    new TopBorder() { Val = BorderValues.Single, Size = 6 },
-                    new BottomBorder() { Val = BorderValues.Single, Size = 6 },
-                    new LeftBorder() { Val = BorderValues.Single, Size = 6 },
-                    new RightBorder() { Val = BorderValues.Single, Size = 6 }
-                ),
                 new Shading() { Val = ShadingPatternValues.Clear, Fill = "FFFFFF" }
             ),
             new Paragraph(
