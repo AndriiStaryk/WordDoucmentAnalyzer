@@ -142,4 +142,64 @@ static class TableGenerator
         table.Append(row);
     }
 
+    public enum MergeDirection
+    {
+        Horizontal,
+        Vertical
+    }
+
+    public static void MergeCells(Table table, List<(int row, int col)> cellCoords, MergeDirection direction)
+    {
+        if (table == null || cellCoords.Count < 2)
+            throw new ArgumentException("Invalid table or not enough cells to merge.");
+
+        cellCoords.Sort((a, b) => direction == MergeDirection.Horizontal ? a.col.CompareTo(b.col) : a.row.CompareTo(b.row));
+
+        if (direction == MergeDirection.Horizontal)
+        {
+            MergeCellsHorizontally(table, cellCoords);
+        }
+        else
+        {
+            MergeCellsVertically(table, cellCoords);
+        }
+    }
+
+    private static void MergeCellsHorizontally(Table table, List<(int row, int col)> cellCoords)
+    {
+        int rowIdx = cellCoords[0].row;
+        TableRow row = table.Elements<TableRow>().ElementAt(rowIdx);
+
+        TableCell firstCell = row.Elements<TableCell>().ElementAt(cellCoords[0].col);
+        firstCell.TableCellProperties = new TableCellProperties(new GridSpan() { Val = (int)cellCoords.Count });
+
+        // Remove merged cells except the first one
+        for (int i = 1; i < cellCoords.Count; i++)
+        {
+            row.RemoveChild(row.Elements<TableCell>().ElementAt(cellCoords[1].col)); 
+        }
+    }
+
+    private static void MergeCellsVertically(Table table, List<(int row, int col)> cellCoords)
+    {
+        int colIdx = cellCoords[0].col;
+
+        for (int i = 0; i < cellCoords.Count; i++)
+        {
+            TableRow row = table.Elements<TableRow>().ElementAt(cellCoords[i].row);
+            TableCell cell = row.Elements<TableCell>().ElementAt(colIdx);
+
+            if (i == 0)
+            {
+                // First cell starts the merge
+                cell.TableCellProperties = new TableCellProperties(new VerticalMerge() { Val = MergedCellValues.Restart });
+            }
+            else
+            {
+                // Subsequent cells continue the merge
+                cell.TableCellProperties = new TableCellProperties(new VerticalMerge() { Val = MergedCellValues.Continue });
+            }
+        }
+    }
+
 }

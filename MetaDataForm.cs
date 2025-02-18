@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml.Office.CustomUI;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -56,6 +57,8 @@ public partial class MetaDataForm : Form
         textBox_PracticePlace.Text = "факультет комп'ютерних наук та кібернетики";
         richTextBox_MentorsDepartment.Text = "Доц.Зубенко В.В., ас. Свистунов А.О., ас. Шишацький А.В., ас. Галавай О.М., ас. Пушкаренко Ю.В.";
         richTextBox_MentorsFaculty.Text = "зав. декана Омельчук Людмила Леонідівна";
+        dateTimePicker_StartDate.Value = new DateTime(2025, 1, 20);
+        dateTimePicker_EndDate.Value = new DateTime(2025, 2, 28);
     }
 
     private void button_GenerateDoc_Click(object sender, EventArgs e)
@@ -112,7 +115,7 @@ public partial class MetaDataForm : Form
     {
         for (int i = 0; i < e.RowCount; i++)
         {
-            _dailyTasks.Add(new DailyTask());
+            _dailyTasks.Add(new DailyTask(""));
         }
     }
 

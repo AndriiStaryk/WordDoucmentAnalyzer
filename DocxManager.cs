@@ -43,6 +43,11 @@ internal class DocxManager
                                                         .Select(task => task.ToStringList())
                                                         .ToList();
         Table dailyTasksTable = TableGenerator.CreateDailyTasksDescriptionTable(dailyTasksDescription);
+        TableGenerator.MergeCells(dailyTasksTable, new List<(int, int)> { (0, 0), (1, 0) }, TableGenerator.MergeDirection.Vertical);
+        TableGenerator.MergeCells(dailyTasksTable, new List<(int, int)> { (0, 1), (1, 1) }, TableGenerator.MergeDirection.Vertical);
+        TableGenerator.MergeCells(dailyTasksTable, new List<(int, int)> { (0, 4), (1, 4) }, TableGenerator.MergeDirection.Vertical);
+        TableGenerator.MergeCells(dailyTasksTable, new List<(int, int)> { (0, 2), (0, 3) }, TableGenerator.MergeDirection.Horizontal);
+        
         ReplacePlaceholderWithTable("{{DailyTasksTable}}", dailyTasksTable);
 
         FileManager.OpenDocx(FileManager.copyFilePath);
