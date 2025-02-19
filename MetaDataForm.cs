@@ -50,15 +50,15 @@ public partial class MetaDataForm : Form
         dataGridView_DailyTasksTable.CellValueChanged += DataGridView_DailyTasksTable_CellValueChanged;
         dataGridView_DailyTasksTable.RowsRemoved += DataGridView_DailyTasksTable_RowsRemoved;
 
-        //Test Data
-        textBox_NominativeCaseName.Text = "Старик Андрій Сергійович";
-        textBox_GenitiveCaseName.Text = "Старика Андрія Сергійовича";
+        //Mockup Data
+        //textBox_NominativeCaseName.Text = "Старик Андрій Сергійович";
+        //textBox_GenitiveCaseName.Text = "Старика Андрія Сергійовича";
         textBox_Group.Text = "ТТП-32";
         textBox_PracticePlace.Text = "факультет комп'ютерних наук та кібернетики";
         richTextBox_MentorsDepartment.Text = "Доц.Зубенко В.В., ас. Свистунов А.О., ас. Шишацький А.В., ас. Галавай О.М., ас. Пушкаренко Ю.В.";
         richTextBox_MentorsFaculty.Text = "зав. декана Омельчук Людмила Леонідівна";
         dateTimePicker_StartDate.Value = new DateTime(2025, 1, 20);
-        dateTimePicker_EndDate.Value = new DateTime(2025, 2, 28);
+        dateTimePicker_EndDate.Value = new DateTime(2025, 2, 21);
     }
 
     private void button_GenerateDoc_Click(object sender, EventArgs e)
@@ -81,7 +81,8 @@ public partial class MetaDataForm : Form
             MentorsFromDepartment = richTextBox_MentorsDepartment.Text,
             MentorsFromFaculty = richTextBox_MentorsFaculty.Text,
             TaskDescription = richTextBox_TaskDescription.Text,
-            DailyTasks = _dailyTasks
+            DailyTasks = _dailyTasks,
+            Characteristics = richTextBox_studentsСharacteristic.Text
         };
 
         _docxManager.GenerateDocument(docMetaData);
@@ -94,7 +95,7 @@ public partial class MetaDataForm : Form
         {
             var task = _dailyTasks[e.RowIndex];
 
-            if (e.ColumnIndex == 0) 
+            if (e.ColumnIndex == 0)
             {
                 task.TaskName = dataGridView_DailyTasksTable.Rows[e.RowIndex].Cells[e.ColumnIndex].Value?.ToString();
             }

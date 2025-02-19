@@ -47,6 +47,8 @@
             richTextBox_MentorsDepartment = new RichTextBox();
             richTextBox_MentorsFaculty = new RichTextBox();
             panel1 = new Panel();
+            label11 = new Label();
+            richTextBox_studentsСharacteristic = new RichTextBox();
             label10 = new Label();
             dataGridView_DailyTasksTable = new DataGridView();
             richTextBox_TaskDescription = new RichTextBox();
@@ -179,7 +181,7 @@
             // 
             // button_GenerateDoc
             // 
-            button_GenerateDoc.Location = new Point(435, 1740);
+            button_GenerateDoc.Location = new Point(454, 1969);
             button_GenerateDoc.Name = "button_GenerateDoc";
             button_GenerateDoc.Size = new Size(486, 58);
             button_GenerateDoc.TabIndex = 17;
@@ -206,6 +208,8 @@
             // panel1
             // 
             panel1.AutoScroll = true;
+            panel1.Controls.Add(label11);
+            panel1.Controls.Add(richTextBox_studentsСharacteristic);
             panel1.Controls.Add(label10);
             panel1.Controls.Add(dataGridView_DailyTasksTable);
             panel1.Controls.Add(richTextBox_TaskDescription);
@@ -231,8 +235,25 @@
             panel1.Dock = DockStyle.Fill;
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(1489, 2108);
+            panel1.Size = new Size(1489, 1099);
             panel1.TabIndex = 20;
+            // 
+            // label11
+            // 
+            label11.AutoSize = true;
+            label11.Location = new Point(32, 1346);
+            label11.Name = "label11";
+            label11.Size = new Size(235, 41);
+            label11.TabIndex = 25;
+            label11.Text = "Характеристика";
+            // 
+            // richTextBox_studentsСharacteristic
+            // 
+            richTextBox_studentsСharacteristic.Location = new Point(682, 1346);
+            richTextBox_studentsСharacteristic.Name = "richTextBox_studentsСharacteristic";
+            richTextBox_studentsСharacteristic.Size = new Size(612, 240);
+            richTextBox_studentsСharacteristic.TabIndex = 24;
+            richTextBox_studentsСharacteristic.Text = "";
             // 
             // label10
             // 
@@ -247,7 +268,7 @@
             // dataGridView_DailyTasksTable
             // 
             dataGridView_DailyTasksTable.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView_DailyTasksTable.Location = new Point(32, 1359);
+            dataGridView_DailyTasksTable.Location = new Point(32, 1608);
             dataGridView_DailyTasksTable.Name = "dataGridView_DailyTasksTable";
             dataGridView_DailyTasksTable.RowHeadersWidth = 102;
             dataGridView_DailyTasksTable.Size = new Size(1262, 319);
@@ -274,7 +295,7 @@
             // 
             AutoScaleDimensions = new SizeF(17F, 41F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1489, 2108);
+            ClientSize = new Size(1489, 1099);
             Controls.Add(panel1);
             Name = "MetaDataForm";
             Text = "MetaDataForm";
@@ -309,5 +330,7 @@
         private Label label9;
         private DataGridView dataGridView_DailyTasksTable;
         private Label label10;
+        private Label label11;
+        private RichTextBox richTextBox_studentsСharacteristic;
     }
 }

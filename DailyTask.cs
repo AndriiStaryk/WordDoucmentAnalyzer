@@ -21,6 +21,12 @@ struct DailyTask
 
     public List<string> ToStringList()
     {
-        return new List<string> { TaskName, StartDate.ToShortDateString(), EndDate.ToShortDateString() };
+        return new List<string> { TaskName, StartDate.ToString("dd.MM"), EndDate.ToString("dd.MM") };
     }
+   
+
+    //public List<string> ToStringList()
+    //{
+    //    return new List<string> { TaskName, StartDate.ToShortDateString(), EndDate.ToShortDateString() };
+    //}
 }

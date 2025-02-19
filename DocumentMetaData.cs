@@ -28,4 +28,5 @@ internal struct DocumentMetaData
 
     public List<DailyTask> DailyTasks { get; set; }
    
+    public string Characteristics { get; set; }
 }

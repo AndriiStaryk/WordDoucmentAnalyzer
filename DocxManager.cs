@@ -22,8 +22,10 @@ internal class DocxManager
         {
             { "{{NominativeCaseName}}", data.NominativeCaseName },
             { "{{GenderNominativeCase}}", data.Gender.ToDescription() },
+            { "{{GenderNominativeCaseLC}}", data.Gender.ToDescription().ToLower() },
             { "{{GenitiveCaseName}}", data.GenitiveCaseName },
             { "{{GenderGenitiveCase}}", data.Gender.ToDescription(true) },
+            { "{{GenderGenitiveCaseLC}}", data.Gender.ToDescription(true).ToLower() },
             { "{{StartDate}}", data.StartDate.ToShortDateString() },
             { "{{EndDate}}", data.EndDate.ToShortDateString() },
             { "{{PracticePlace}}", data.PracticePlace },
@@ -38,6 +40,11 @@ internal class DocxManager
         Table taskDescriptionTable = TableGenerator.CreateSimpleTableBasedOnLines(taskDescriptionLines);
         ReplacePlaceholderWithTable("{{TaskDescriptionTable}}", taskDescriptionTable);
 
+        List<string> characteristicsLines = SplitTextIntoLines(data.Characteristics);
+        Table characteristicsTable = TableGenerator.CreateSimpleTableBasedOnLines(characteristicsLines);
+        ReplacePlaceholderWithTable("{{CharacteristicTable}}", characteristicsTable);
+
+        
 
         List<List<string>> dailyTasksDescription = data.DailyTasks
                                                         .Select(task => task.ToStringList())

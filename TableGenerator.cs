@@ -10,7 +10,7 @@ namespace DocumentAnalyzer;
 
 static class TableGenerator
 {
-    public static Table CreateDailyTasksDescriptionTable(List<List<string>> rows, int minRowsCount = 28, int maxRowsCount = 28)
+    public static Table CreateDailyTasksDescriptionTable(List<List<string>> rows, int minRowsCount = 27, int maxRowsCount = 27)
     {
         Table table = new Table(new TableProperties(
             new TableWidth() { Width = "100%", Type = TableWidthUnitValues.Pct },
@@ -71,7 +71,9 @@ static class TableGenerator
             new Paragraph(
                 new Run(
                     new RunProperties(
-                        new Bold() { Val = isHeader ? OnOffValue.FromBoolean(true) : OnOffValue.FromBoolean(false) }
+                        new Bold() { Val = isHeader ? OnOffValue.FromBoolean(true) : OnOffValue.FromBoolean(false) },
+                        new FontSize() { Val = "20" },
+                        new RunFonts() { Ascii = "Arial", HighAnsi = "Arial" }
                     ),
                     new Text(text) { Space = SpaceProcessingModeValues.Preserve }
                 )
@@ -130,7 +132,7 @@ static class TableGenerator
             new Paragraph(
                 new Run(
                     new RunProperties(
-                        new FontSize() { Val = "22" },
+                        new FontSize() { Val = "20" },
                         new RunFonts() { Ascii = "Arial", HighAnsi = "Arial" }
                     ),
                     new Text(text) { Space = SpaceProcessingModeValues.Preserve }
