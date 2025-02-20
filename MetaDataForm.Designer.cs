@@ -181,7 +181,7 @@
             // 
             // button_GenerateDoc
             // 
-            button_GenerateDoc.Location = new Point(454, 1969);
+            button_GenerateDoc.Location = new Point(450, 1978);
             button_GenerateDoc.Name = "button_GenerateDoc";
             button_GenerateDoc.Size = new Size(486, 58);
             button_GenerateDoc.TabIndex = 17;
@@ -235,7 +235,7 @@
             panel1.Dock = DockStyle.Fill;
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(1489, 1099);
+            panel1.Size = new Size(1489, 941);
             panel1.TabIndex = 20;
             // 
             // label11
@@ -258,12 +258,12 @@
             // label10
             // 
             label10.AutoSize = true;
-            label10.Location = new Point(646, 2030);
+            label10.Location = new Point(645, 2058);
             label10.Name = "label10";
-            label10.Size = new Size(113, 41);
+            label10.Size = new Size(82, 41);
             label10.TabIndex = 23;
-            label10.Text = "label10";
-            label10.Visible = false;
+            label10.Text = "2025";
+            label10.Click += label10_Click;
             // 
             // dataGridView_DailyTasksTable
             // 
@@ -295,7 +295,7 @@
             // 
             AutoScaleDimensions = new SizeF(17F, 41F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1489, 1099);
+            ClientSize = new Size(1489, 941);
             Controls.Add(panel1);
             Name = "MetaDataForm";
             Text = "MetaDataForm";

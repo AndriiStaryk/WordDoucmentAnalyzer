@@ -10,7 +10,7 @@ namespace DocumentAnalyzer;
 
 static class TableGenerator
 {
-    public static Table CreateDailyTasksDescriptionTable(List<List<string>> rows, int minRowsCount = 27, int maxRowsCount = 27)
+    public static Table CreateDailyTasksDescriptionTable(List<List<string>> rows, int minRowsCount = 23, int maxRowsCount = 23)
     {
         Table table = new Table(new TableProperties(
             new TableWidth() { Width = "100%", Type = TableWidthUnitValues.Pct },

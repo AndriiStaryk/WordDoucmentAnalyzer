@@ -54,11 +54,11 @@ public partial class MetaDataForm : Form
         //textBox_NominativeCaseName.Text = "Старик Андрій Сергійович";
         //textBox_GenitiveCaseName.Text = "Старика Андрія Сергійовича";
         textBox_Group.Text = "ТТП-32";
-        textBox_PracticePlace.Text = "факультет комп'ютерних наук та кібернетики";
+        textBox_PracticePlace.Text = "катедру теорії та технології програмування факультету комп’ютерних наук та кібернетик";
         richTextBox_MentorsDepartment.Text = "Доц.Зубенко В.В., ас. Свистунов А.О., ас. Шишацький А.В., ас. Галавай О.М., ас. Пушкаренко Ю.В.";
-        richTextBox_MentorsFaculty.Text = "зав. декана Омельчук Людмила Леонідівна";
+        richTextBox_MentorsFaculty.Text = "заступник декана Людмила ОМЕЛЬЧУК";
         dateTimePicker_StartDate.Value = new DateTime(2025, 1, 20);
-        dateTimePicker_EndDate.Value = new DateTime(2025, 2, 21);
+        dateTimePicker_EndDate.Value = new DateTime(2025, 3, 2);
     }
 
     private void button_GenerateDoc_Click(object sender, EventArgs e)
@@ -131,4 +131,8 @@ public partial class MetaDataForm : Form
         }
     }
 
+    private void label10_Click(object sender, EventArgs e)
+    {
+
+    }
 }
